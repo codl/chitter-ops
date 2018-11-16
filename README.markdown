@@ -25,7 +25,7 @@ There are two servers involved:
 
 the app server, streaming server, sidekiq, and database are all on `boop`
 
-the app and streaming server are behind a caddy instance, which handles all the TLS stuff. the </Caddyfile> is in this repo
+the app and streaming server are behind a caddy instance, which handles all the TLS stuff. the [Caddyfile](/Caddyfile) is in this repo
 
 > TODO document sidekiq
 
@@ -43,7 +43,7 @@ Incoming requests to `media.chitter.xyz` go to BunnyCDN, which then goes to a ca
 
 It might seem silly to have two layers of caching (the CDN and `they`), but B2 has a pretty bad time to first byte, and were it not for the central cache on `they`, each BunnyCDN location would hit B2 separately and we'd end up "paying" the time to first byte once in each location before the resource is cached.
 
-The implementation of the cache server is in </media-cache> in this repository.
+The implementation of the cache server is in [/media-cache](/media-cache) in this repository.
 
 ### historical media locations
 
