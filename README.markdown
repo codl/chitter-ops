@@ -25,7 +25,7 @@ There are two servers involved:
 
 the app server, streaming server, sidekiq, and database are all on `boop`
 
-the app and streaming server are behind a caddy instance, which handles all the TLS stuff. the [Caddyfile](/Caddyfile) is in this repo
+the app and streaming server are behind a caddy instance, which handles serving static content, reverse proxying, and all the TLS stuff. the [Caddyfile](/Caddyfile) is in this repo
 
 > TODO document sidekiq
 
