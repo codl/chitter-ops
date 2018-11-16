@@ -22,7 +22,10 @@ sub vcl_backend_response {
     set beresp.http.x-from = bereq.backend;
 
     if (beresp.status != 200) {
-        return(pass);
+        set beresp.ttl = 0s;
+        set beresp.keep = 0s;
+        set beresp.grace = 0s;
+        set beresp.http.cache-control = "max-age=0";
     }
     else {
         set beresp.ttl = 5d;
