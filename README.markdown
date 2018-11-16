@@ -1,4 +1,4 @@
-# chitter-ops
+# chitter operations 🦝🔧
 
 this repository documents non-obvious parts of chitter's architecture
 
