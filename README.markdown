@@ -54,16 +54,16 @@ because toots are (indefinitely?) cached on remote servers with whatever media u
 * `https://chitter-media.codl.fr/` served by `they`, redirects
 * `https://chitter.xyz/system/` currently 404s 😕
 
-## status
+## [status](https://github.com/codl/status.chitter.xyz)
 
-<https://status.chitter.xyz/> is hosted on netlify, so that it will stay online even if both servers are down
+<https://status.chitter.xyz/> is hosted on netlify
 
 updown.io is set up to monitor chitter.xyz, specifically [the public timeline api endpoint][tl], and the index page of media.chitter.xyz. this page fetches statuses for both of those thru the updown.io api
 
 for outage details, `updates.html` in the `chitter-outages` S3 bucket is loaded every 10 seconds and inserted in the page
 
-this has been designed to not have any server component. everything is static html or third-party APIs
+this has been designed to not have any server component. everything is static html or third-party APIs and none of it is on our servers
 
 [tl]: https://chitter.xyz/api/v1/timelines/public?local=true
 
-the barebones form to update `updates.html` at <https://update.status.chitter.xyz/> is hosted on `they`
+the barebones form to update `updates.html` at <https://update.status.chitter.xyz/> is hosted on `they`. if necessary, `updates.html` can be updated by hand with `rclone` or in the AWS console
