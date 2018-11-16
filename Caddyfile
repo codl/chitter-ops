@@ -1,0 +1,44 @@
+chitter.xyz {
+    header / {
+        strict-transport-security max-age=61300800
+        expect-ct max-age=61300800
+        referrer-policy same-origin
+        content-security-policy "default-src 'none'; img-src 'self' data: blob: https://media.chitter.xyz https://media-b.chitter.xyz; media-src 'self' https://media.chitter.xyz https://media-b.chitter.xyz; script-src 'self' https://media.chitter.xyz; style-src 'self' 'unsafe-inline'; font-src 'self'; connect-src 'self' wss://chitter.xyz https://media.chitter.xyz https://media-b.chitter.xyz blob:; child-src https:; report-uri https://codl.report-uri.com/r/d/csp/enforce; base-uri 'none'; manifest-src 'self'"
+
+        x-clacks-overhead "GNU Natalie Nguyen"
+    }
+
+    root /srv/chitter/public
+
+    limits {
+        body 8mb
+    }
+
+    # serves file from /public if it exists, otherwise refers to backend
+    rewrite {
+        if {path} is /
+        to /backend/{uri}
+    }
+    rewrite {
+        to {path} /backend/{uri}
+    }
+
+    proxy /backend http://127.0.0.1:3000/ {
+        without /backend
+        transparent
+        timeout 60s
+        header_downstream -content-security-policy
+    }
+
+    proxy /backend/api/v1/streaming http://127.0.0.1:4000/ {
+        without /backend
+        websocket
+    }
+
+    errors {
+        500 500.html
+        502 500.html
+        503 500.html
+        504 500.html
+    }
+}

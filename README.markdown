@@ -23,7 +23,15 @@ There are two servers involved:
 
 ## app
 
-TODO
+the app server, streaming server, sidekiq, and database are all on `boop`
+
+the app and streaming server are behind a caddy instance, which handles all the TLS stuff. the </Caddyfile> is in this repo
+
+> TODO document sidekiq
+
+> TODO document backups
+
+> TODO document deployment procedure
 
 ## media
 
