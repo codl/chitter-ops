@@ -1,0 +1,11 @@
+services:
+    frontend:
+        build:
+            context: '.'
+            dockerfile: 'Dockerfile.frontend'
+        restart: unless-stopped
+        networks:
+            cache: {}
+        ports:
+            - '80:80'
+            - '443:443'

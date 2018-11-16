@@ -1,0 +1,5 @@
+from million12/varnish
+
+copy varnish.vcl /etc/varnish/default.vcl
+
+env CACHE_SIZE 1G

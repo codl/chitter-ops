@@ -1,0 +1,3 @@
+media.chitter.xyz {
+    proxy / varnish
+}
