@@ -4,6 +4,11 @@ chitter.xyz {
         expect-ct max-age=61300800
         referrer-policy same-origin
         content-security-policy "default-src 'none'; img-src 'self' data: blob: https://media.chitter.xyz https://media-b.chitter.xyz; media-src 'self' https://media.chitter.xyz https://media-b.chitter.xyz; script-src 'self' https://media.chitter.xyz; style-src 'self' 'unsafe-inline'; font-src 'self'; connect-src 'self' wss://chitter.xyz https://media.chitter.xyz https://media-b.chitter.xyz blob:; child-src https:; report-uri https://codl.report-uri.com/r/d/csp/enforce; base-uri 'none'; manifest-src 'self'"
+        # we overwrite the CSP for three reasons
+        # 1. both media and media-b are included so they can be hotswapped
+        #    without needing a page refresh
+        # 2. the mascot script needs connect-src access to media
+        # 3. report-uri
 
         x-clacks-overhead "GNU Natalie Nguyen"
     }
