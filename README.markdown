@@ -45,6 +45,16 @@ It might seem silly to have two layers of caching (the CDN and `they`), but B2 h
 
 The implementation of the cache server is in [/media-cache](/media-cache) in this repository.
 
+The full public URL to the B2 bucket is `https://f001.backblazeb2.com/file/chitter-media/`
+
+The url to the cache server is `https://orig.media.chitter.xyz/`
+
+Test URLs:
+
+* <https://f001.backblazeb2.com/file/chitter-media/mascots/danfoxx.png>
+* <https://orig.media.chitter.xyz/mascots/danfoxx.png>
+* <https://media.chitter.xyz/mascots/danfoxx.png>
+
 ### historical media locations
 
 because toots are (indefinitely?) cached on remote servers with whatever media url was appropriate at the time, the following locations should continue serving or redirecting to the canonical location for media:
