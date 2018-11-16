@@ -17,4 +17,4 @@ services:
         networks:
             cache: {}
         ports:
-            - '80:51442'
+            - '51442:80'
