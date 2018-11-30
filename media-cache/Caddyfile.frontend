@@ -1,3 +1,4 @@
 orig.media.chitter.xyz {
     proxy / varnish
+    tls codl@codl.fr
 }
