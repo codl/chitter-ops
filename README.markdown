@@ -86,7 +86,7 @@ because toots are (indefinitely?) cached on remote servers with whatever media u
 
 * `https://media.chitter.xyz/` current canonical URL
 * `https://media-b.chitter.xyz/` was occasionally used when rotating servers. served by bunnycdn identically to the other one
-* `https://chitter-media.codl.fr/` points to `tempo`, which `301 Permanent Redirect`s to `media.chitter.xyz`
+* `https://chitter-media.codl.fr/` points to `tempo`, which `301 Moved Permanently`s to `media.chitter.xyz`
 * `https://chitter.xyz/system/` currently 404s 😕
 
 ## [status](https://github.com/codl/status.chitter.xyz)
