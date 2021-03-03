@@ -6,7 +6,7 @@ this repository documents non-obvious parts of chitter's architecture
 
 There are two servers involved:
 
-* `tempo.chitter.xyz` or [`tempo`](https://en.wikipedia.org/wiki/Tempo_(video_game))
+* `tempo.chitter.xyz` or [`tempo`](https://www.mobygames.com/game/sega-32x/tempo)
 
     * `10.235.0.4`
       `176.9.92.130`
