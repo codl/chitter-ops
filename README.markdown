@@ -6,7 +6,7 @@ this repository documents non-obvious parts of chitter's architecture
 
 There are two servers involved:
 
-* `tempo.chitter.xyz` or `[tempo](https://en.wikipedia.org/wiki/Tempo_(video_game))`
+* `tempo.chitter.xyz` or [`tempo`](https://en.wikipedia.org/wiki/Tempo_(video_game))
 
     * `10.235.0.4`
       `176.9.92.130`
@@ -20,7 +20,7 @@ There are two servers involved:
 
     * Paid for by Patreon patrons (€36.30/mo) (Thank you!)
 
-* `parasect.codl.fr` or `[parasect](https://bulbapedia.bulbagarden.net/wiki/Parasect_(Pok%C3%A9mon))`
+* `parasect.codl.fr` or [`parasect`](https://bulbapedia.bulbagarden.net/wiki/Parasect_(Pok%C3%A9mon))
 
     * `10.235.0.3`
       `144.76.7.70`
