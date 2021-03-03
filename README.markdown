@@ -65,8 +65,6 @@ is in this repo.
 
 Incoming requests to `media.chitter.xyz` go to BunnyCDN, which then goes to `tempo`.
 
-It might seem silly to have two layers of caching (the CDN and `tempo`), but B2 has a pretty bad time to first byte, and were it not for the central cache on `tempo`, each BunnyCDN location would hit B2 separately and we'd end up "paying" the time to first byte once in each location before the resource is cached.
-
 The full public URL to the B2 bucket is `https://f001.backblazeb2.com/file/chitter-media/`
 
 `parasect`'s media is at `https://chitter-media.parasect.codl.fr`.
