@@ -42,7 +42,7 @@ server {
         internal;
         rewrite .* $request_uri break;
         proxy_pass https://chitter-media.parasect.codl.fr;
-        error_page 404 = /b2;
+        error_page 404 = /b2/$request_uri;
         add_header upstream parasect always;
         add_header cache-control "max-age=432000; immutable; public";
         add_header access-control-allow-origin "*";
@@ -50,18 +50,18 @@ server {
 
     location /b2 {
         internal;
-        rewrite .* /file/chitter-media$request_uri break;
+        rewrite ^/b2/([^?]*)(\?.*)?$ /file/chitter-media$1 break;
         proxy_pass https://f001.backblazeb2.com;
         add_header upstream b2 always;
         add_header cache-control "max-age=432000; immutable; public";
         add_header access-control-allow-origin "*";
-
+        add_header dollar-uri $uri always;
     }
 
     proxy_cache chittermedia;
     proxy_ignore_headers cache-control expires;
     proxy_cache_valid 200 30d;
-    proxy_cache_key "$scheme$proxy_host$request_uri $slice_range";
+    proxy_cache_key "1:$scheme$proxy_host$request_uri $slice_range";
     slice 1m;
     proxy_set_header Range $slice_range;
     proxy_http_version 1.1;
