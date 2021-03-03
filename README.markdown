@@ -49,8 +49,6 @@ A couple of my dev machines also have keys and connect to this network, which I
 know isn't ideal security wise. (Reason being it started as an administrative
 network and I didn't take the time to make another one)
 
-> TODO document sidekiq
-
 > TODO document backups
 
 > TODO document deployment procedure
