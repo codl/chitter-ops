@@ -1,7 +1,0 @@
-from abiosoft/caddy:0.11.1-no-stats
-
-copy Caddyfile.frontend /etc/Caddyfile
-
-volume /root/.caddy
-
-env ACME_AGREE="true"

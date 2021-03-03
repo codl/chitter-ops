@@ -1,3 +1,0 @@
-:80 {
-    proxy / https://f001.backblazeb2.com/file/chitter-media/
-}

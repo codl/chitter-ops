@@ -1,3 +1,0 @@
-from abiosoft/caddy:0.11.1-no-stats
-
-copy Caddyfile.proxy /etc/Caddyfile

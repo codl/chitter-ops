@@ -6,26 +6,48 @@ this repository documents non-obvious parts of chitter's architecture
 
 There are two servers involved:
 
-* `boop.chitter.xyz` or `boop`
-    * main app server
+* `tempo.chitter.xyz` or `[tempo](https://en.wikipedia.org/wiki/Tempo_(video_game))`
 
-    * Scaleway C2M in PAR1
+    * `10.235.0.4`
+      `176.9.92.130`
+      `2a01:4f8:151:337a::1`
 
-    * Paid for by Patreon backers
+    * PostgreSQL, Redis, and media hosting / proxying
 
-* `they.codl.fr` or `they`
+    * Hetzner auction server in Falkenstein (FSN1)
 
-    * media cache and misc stuff
+      Core i7-2600, 250 GB SATA SSD, 3+3 TB SATA HDD, 8+8 GiB DDR3 RAM
 
-    * Scaleway C2M in PAR1
+    * Paid for by Patreon patrons (€36.30/mo) (Thank you!)
 
-    * Paid out of pocket by codl (I have other stuff running on it)
+* `parasect.codl.fr` or `[parasect](https://bulbapedia.bulbagarden.net/wiki/Parasect_(Pok%C3%A9mon))`
+
+    * `10.235.0.3`
+      `144.76.7.70`
+      `2a01:4f8:190:8245::2`
+
+    * Ingress traffic, Application server, Sidekiq queue workers, media hosting
+
+    * Hetzner auction server in Falkenstein (FSN1)
+
+    * Paid out of pocket by codl
+
+    * On its way out. `tempo` is more than capable of handling both it and
+      `parasect`'s jobs
 
 ## app
 
-the app server, streaming server, sidekiq, and database are all on `boop`
+the app server, streaming server, sidekiq, are all on `parasect`, running with docker-compose
 
 the app and streaming server are behind a caddy instance, which handles serving static content, reverse proxying, and all the TLS stuff. the [Caddyfile](/Caddyfile) is in this repo
+
+The PostgreSQL and Redis databases are on `tempo`.
+
+The two servers are on a tinc VPN with name `chitter` and network `10.235.0.0/16`,
+PostgreSQL and Redis are set up to only accept connections from that network.
+A couple of my dev machines also have keys and connect to this network, which I
+know isn't ideal security wise. (Reason being it started as an administrative
+network and I didn't take the time to make another one)
 
 > TODO document sidekiq
 
@@ -35,24 +57,29 @@ the app and streaming server are behind a caddy instance, which handles serving 
 
 ## media
 
-Media is stored in Backblaze B2, in the `chitter-media` bucket
+Media is stored in three places, because we've moved media a bunch and I never
+bothered consolidating it afterwards. Some media is on Backblaze B2 in the
+`chitter-media` bucket, some media is served from a minio instance on
+`parasect`, and the rest, including all newly uploaded media, is on a minio
+instance on `tempo`. Nginx on `tempo` takes care of trying all three locations (in
+reverse order) and caching responses from the first two. The [nginx config](/chitter-media.nginx.inc)
+is in this repo.
 
-A minio instance running in docker on `boop` does the bridging between Mastodon's S3 support and B2
+Incoming requests to `media.chitter.xyz` go to BunnyCDN, which then goes to `tempo`.
 
-Incoming requests to `media.chitter.xyz` go to BunnyCDN, which then goes to a cache server on `they`, which then goes to B2 itself
-
-It might seem silly to have two layers of caching (the CDN and `they`), but B2 has a pretty bad time to first byte, and were it not for the central cache on `they`, each BunnyCDN location would hit B2 separately and we'd end up "paying" the time to first byte once in each location before the resource is cached.
-
-The implementation of the cache server is in [/media-cache](/media-cache) in this repository.
+It might seem silly to have two layers of caching (the CDN and `tempo`), but B2 has a pretty bad time to first byte, and were it not for the central cache on `tempo`, each BunnyCDN location would hit B2 separately and we'd end up "paying" the time to first byte once in each location before the resource is cached.
 
 The full public URL to the B2 bucket is `https://f001.backblazeb2.com/file/chitter-media/`
 
-The url to the cache server is `https://orig.media.chitter.xyz/`
+`parasect`'s media is at `https://chitter-media.parasect.codl.fr`.
+
+`tempo`'s proxy/cache/media is at `https://tempo.orig.media.chitter.xyz`.
+Inconsistent, I know.
 
 Test URLs:
 
 * <https://f001.backblazeb2.com/file/chitter-media/mascots/danfoxx.png>
-* <https://orig.media.chitter.xyz/mascots/danfoxx.png>
+* <https://tempo.orig.media.chitter.xyz/mascots/danfoxx.png>
 * <https://media.chitter.xyz/mascots/danfoxx.png>
 
 ### historical media locations
@@ -60,8 +87,8 @@ Test URLs:
 because toots are (indefinitely?) cached on remote servers with whatever media url was appropriate at the time, the following locations should continue serving or redirecting to the canonical location for media:
 
 * `https://media.chitter.xyz/` current canonical URL
-* `https://media-b.chitter.xyz/` occasionally used when rotating servers. served by bunnycdn identically to the other one
-* `https://chitter-media.codl.fr/` served by `they`, redirects
+* `https://media-b.chitter.xyz/` was occasionally used when rotating servers. served by bunnycdn identically to the other one
+* `https://chitter-media.codl.fr/` points to `tempo`, which `301 Permanent Redirect`s to `media.chitter.xyz`
 * `https://chitter.xyz/system/` currently 404s 😕
 
 ## [status](https://github.com/codl/status.chitter.xyz)
@@ -76,4 +103,5 @@ this has been designed to not have any server component. everything is static ht
 
 [tl]: https://chitter.xyz/api/v1/timelines/public?local=true
 
-the barebones form to update `updates.html` at <https://update.status.chitter.xyz/> is hosted on `they`. if necessary, `updates.html` can be updated by hand with `rclone` or in the AWS console
+`updates.html` can be updated by hand with `rclone` or in the AWS console.
+there used to be a barebones form to update `updates.html` at <https://update.status.chitter.xyz/> but the machine it was on was decommissioned.
