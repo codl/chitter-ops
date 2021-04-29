@@ -2,6 +2,8 @@
 
 this repository documents non-obvious parts of chitter's architecture
 
+⚠ **As of April 27, 2021, this is a bit outdated** as most things were migrated off of `parasect`. This document will be updated when the migration is done.
+
 ## servers
 
 There are two servers involved:
